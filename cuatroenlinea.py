@@ -1,5 +1,5 @@
 import numpy as np
-import random
+
 # DATOS INICIALES
 GAME_BOARD1 = (4, 4)  # Tamaño del tablero 4x4
 GAME_BOARD2 = (6, 6)  # Tamaño del tablero 6x6
@@ -63,13 +63,36 @@ def checkString(string):
         processed.append(currentString)
     return processed
 
-def isThereAWinner(lista):
-    for j in range(lista.shape[0]):
-        for i in range (lista.shape[1]):
-            if lista[j, i] == 0:
-                lista[j, i] == 'X'
-    return lista
+def isThereAWinner(board):
+    # Crea una copia de la lista para trabajar con ella
+    check_board = np.copy(board)
+    
+    # Modifica la copia
+    for j in range(check_board.shape[0]):
+        for i in range(check_board.shape[1]):
+            if check_board[j, i] == 0:
+                check_board[j, i] = 'X'
+    
+    return check_board
 
+def checkWin(board):
+    possible = 0
+    check = isThereAWinner(board)
+    
+    for j in range(check.shape[0]):
+        count = 0
+        for i in range(check.shape[1]):
+            if check[j, i] == 'X':
+                count += 1
+                if count == 4:
+                    possible += 1
+            else:
+                count = 0
+    
+    if possible >= 1:
+        print("Sigue Jugando")
+    else:
+        print("Es un empate")
 
 # PROGRAMA PRINCIPAL
 
