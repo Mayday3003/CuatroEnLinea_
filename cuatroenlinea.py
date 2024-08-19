@@ -158,3 +158,5 @@ while gameBoard[0] != False:
         gameBoard = chooseGameBoard()
 
 print("Vuelve pronto...")
+if gameBoard:
+    print("Has salido del juego")
