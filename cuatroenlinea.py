@@ -182,15 +182,3 @@ while gameBoard[0] != False:
 
 print("Vuelve pronto...")
 
-print("Vuelve pronto...")
-
-print("Vuelve pronto...")
-
-print("Vuelve pronto...")
-
-print("Vuelve pronto...")
-
-print("Vuelve pronto...")
-
-print("Vuelve pronto...")
-
