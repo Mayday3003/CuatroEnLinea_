@@ -181,3 +181,9 @@ while gameBoard[0] != False:
         gameBoard = chooseGameBoard()
 
 print("Vuelve pronto...")
+
+print("Vuelve pronto...")
+
+print("Vuelve pronto...")
+
+print("Vuelve pronto...")
