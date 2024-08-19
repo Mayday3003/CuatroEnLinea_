@@ -1,5 +1,5 @@
 import numpy as np
-
+import random
 # DATOS INICIALES
 GAME_BOARD1 = (4, 4)  # Tamaño del tablero 4x4
 GAME_BOARD2 = (6, 6)  # Tamaño del tablero 6x6
@@ -158,5 +158,3 @@ while gameBoard[0] != False:
         gameBoard = chooseGameBoard()
 
 print("Vuelve pronto...")
-if gameBoard:
-    print("Has salido del juego")
