@@ -138,6 +138,29 @@ while gameBoard[0] != False:
                     print("Esta casilla está ocupada, elige otra:")
                     continue
                 print(board)
+                
+            #PARTE NUEVAAA
+            # Verifica si alguien ha ganado 
+            winner = False
+            for i in range(board.shape[0]):
+        
+                if all(board[i, :] == 'X'):
+                    winner = True
+                    break
+                elif all(board[:, i] == 'X'):
+                    winner = True
+                    break
+                elif all(np.diag(board) == 'X') or all(np.diag(np.fliplr(board)) == 'X'):
+                    winner = True
+                    break
+                elif all(board[i, :] == 'O'):
+                 winner = True
+                 break
+                elif all(board[:, i] == 'O'):
+                 winner
+                elif all(np.diag(board) == 'O') or all(np.diag(np.fliplr(board)) == 'O'):
+                    winner = True
+                    break
 
             # Pregunta al usuario si desea seguir jugando
             keepPlaying = True
