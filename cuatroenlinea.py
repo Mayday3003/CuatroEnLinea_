@@ -63,6 +63,14 @@ def checkString(string):
         processed.append(currentString)
     return processed
 
+def isThereAWinner(lista):
+    for j in range(lista.shape[0]):
+        for i in range (lista.shape[1]):
+            if lista[j, i] == 0:
+                lista[j, i] == 'X'
+    return lista
+
+
 # PROGRAMA PRINCIPAL
 
 # Se usa el MÓDULO 1 para dar inicio al juego, empezando por escoger el tablero
