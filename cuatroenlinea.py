@@ -65,22 +65,44 @@ def checkString(string):
 
 def isThereAWinner(board):
     # Crea una copia de la lista para trabajar con ella
-    check_board = np.copy(board)
+    checkBoardX = np.copy(board)
+    checkBoardO = np.copy(board)
     
-    # Modifica la copia
-    for j in range(check_board.shape[0]):
-        for i in range(check_board.shape[1]):
-            if check_board[j, i] == 0:
-                check_board[j, i] = 'X'
+    # Modifica la copia de X
+    for j in range(checkBoardX.shape[0]):
+        for i in range(checkBoardX.shape[1]):
+            if checkBoardX[j, i] == 0:
+                checkBoardX[j, i] = 'X'
     
     possible = 0
 
     #Faltan las diferentes formas de ganar (vertical, diagonal)
     
-    for j in range(check_board.shape[0]):
+    for j in range(checkBoardX.shape[0]):
         count = 0
-        for i in range(check_board.shape[1]):
-            if check_board[j, i] == 'X':
+        for i in range(checkBoardX.shape[1]):
+            if checkBoardX[j, i] == 'X':
+                count += 1
+                if count == 4:
+                    possible += 1
+            else:
+                count = 0
+
+    # Modifica la copia de O
+
+    for j in range(checkBoardO.shape[0]):
+        for i in range(checkBoardO.shape[1]):
+            if checkBoardO[j, i] == 0:
+                checkBoardO[j, i] = 'O'
+    
+    possible = 0
+
+    #Faltan las diferentes formas de ganar (vertical, diagonal)
+    
+    for j in range(checkBoardO.shape[0]):
+        count = 0
+        for i in range(checkBoardO.shape[1]):
+            if checkBoardO[j, i] == 'O':
                 count += 1
                 if count == 4:
                     possible += 1
@@ -108,7 +130,7 @@ while gameBoard[0] != False:
             winner = False
             
             while not winner:
-                isThereAWinner(board)
+                isThereAWinner(board) #Se comprueba si aun hay posibilidades de ganar despues de cada vuelta.
                 # INTERACCIÓN JUGADOR 1
                 print("Jugador 1, elige una casilla")
                 rowX = checkString(input("Elige una fila:  "))
