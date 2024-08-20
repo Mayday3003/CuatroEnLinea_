@@ -74,6 +74,8 @@ def isThereAWinner(board):
                 check_board[j, i] = 'X'
     
     possible = 0
+
+    #Faltan las diferentes formas de ganar (vertical, diagonal)
     
     for j in range(check_board.shape[0]):
         count = 0
