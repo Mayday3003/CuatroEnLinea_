@@ -88,6 +88,16 @@ def isThereAWinner(board):
                     possible += 1
             else:
                 count = 0
+    
+    for j in range(checkBoardX.shape[0]):
+        count = 0
+        for i in range(checkBoardX.shape[1]):
+            if checkBoardX[i, j] == 'X':
+                count += 1
+                if count == 4:
+                    possible += 1
+            else:
+                count = 0
 
     # Modifica la copia de O
 
@@ -109,6 +119,15 @@ def isThereAWinner(board):
                     possible += 1
             else:
                 count = 0
+    for j in range(checkBoardO.shape[0]):
+        count = 0
+        for i in range(checkBoardO.shape[1]):
+            if checkBoardO[i, j] == 'O':
+                count += 1
+                if count == 4:
+                    possible += 1
+            else:
+                count = 0
     
     """
     Revisa si uno de los 2 jugadores tiene posibilidades de ganar o no
@@ -118,6 +137,7 @@ def isThereAWinner(board):
         print("Sigue Jugando")
     else:
         print("Es un empate")
+        
 
 # PROGRAMA PRINCIPAL
 
