@@ -137,7 +137,14 @@ def isThereAWinner(board):
         print("Sigue Jugando")
     else:
         print("Es un empate")
-        
+
+def printBoard(board):
+    print("   " + "  ".join(f"{i+1:2}" for i in range(board.shape[1])))
+    print("  +" + "---+" * board.shape[1])
+
+    for i, row in enumerate(board):
+        print(f"{i+1} | " + " | ".join(' ' if x == 0 else x for x in row) + " |")
+        print("  +" + "---+" * board.shape[1])
 
 # PROGRAMA PRINCIPAL
 
@@ -150,7 +157,7 @@ while gameBoard[0] != False:
         playing = True
         while playing:
             board = gameBoard[2]  # Selecciona el tablero actual
-            print(board)
+            printBoard(board)
             print("Los ceros representan los espacios disponibles")
             winner = False
             
@@ -184,7 +191,7 @@ while gameBoard[0] != False:
                 else:
                     print("Esta casilla está ocupada, elige otra:")
                     continue
-                print(board)
+                printBoard(board)
 
                 # INTERACCIÓN JUGADOR 2
                 print("Jugador 2, elige una casilla")
@@ -214,7 +221,7 @@ while gameBoard[0] != False:
                 else:
                     print("Esta casilla está ocupada, elige otra:")
                     continue
-                print(board)
+                printBoard(board)
                 
             #PARTE NUEVAAA
             # Verifica si alguien ha ganado 
