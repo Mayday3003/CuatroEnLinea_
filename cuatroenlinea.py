@@ -110,6 +110,10 @@ def isThereAWinner(board):
             else:
                 count = 0
     
+    """
+    Revisa si uno de los 2 jugadores tiene posibilidades de ganar o no
+    PD: En un futuro, en lugar de los prints, se van a retornar valores booleanos para continuar o no con el juego
+    """
     if possible >= 1:
         print("Sigue Jugando")
     else:
