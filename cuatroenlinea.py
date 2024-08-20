@@ -63,6 +63,7 @@ def checkString(string):
         processed.append(currentString)
     return processed
 
+# MÓDULO 4: PREDECIR EMPATE
 def isThereAWinner(board):
     # Crea una copia de la lista para trabajar con ella
     checkBoardX = np.copy(board)
