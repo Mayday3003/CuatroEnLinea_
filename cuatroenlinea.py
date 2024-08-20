@@ -77,7 +77,7 @@ def isThereAWinner(board):
     
     possible = 0
 
-    #Faltan las diferentes formas de ganar (vertical, diagonal)
+    #Faltan las diferentes formas de ganar (diagonal)
     
     for j in range(checkBoardX.shape[0]):
         count = 0
@@ -108,7 +108,7 @@ def isThereAWinner(board):
     
     possible = 0
 
-    #Faltan las diferentes formas de ganar (vertical, diagonal)
+    #Faltan las diferentes formas de ganar (diagonal)
     
     for j in range(checkBoardO.shape[0]):
         count = 0
