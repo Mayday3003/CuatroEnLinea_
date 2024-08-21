@@ -19,13 +19,13 @@ def chooseGameBoard() -> int | str:
     
     if answer == "a":
         # Retorna True para continuar, True para jugar y el tablero 4x4 vacío
-        return (True, True, np.zeros(GAME_BOARD1, dtype=object))
+        return [True, True, np.zeros(GAME_BOARD1, dtype=object)]
     elif answer == "b":
         # Retorna True para continuar, True para jugar y el tablero 6x6 vacío
-        return (True, True, np.zeros(GAME_BOARD2, dtype=object))
+        return [True, True, np.zeros(GAME_BOARD2, dtype=object)]
     elif answer == "c":
         # Retorna False para salir del juego
-        return (False,)
+        return [False]
     else:
         # Mensaje de error si la opción no es válida
         print("Esta opción no está disponible, elige una opción que sí esté disponible")
@@ -88,11 +88,11 @@ def isThereAWinner(board):
     PD: En un futuro, en lugar de los prints, se van a retornar valores booleanos para continuar o no con el juego
     """
     if checkBoardO or checkBoardX:
-        print("Sigue Jugando")
+        return True
     else:
         print("Es un empate")
 
-#MÓDULO 5: Genera un checkBoardX más estetico
+#MÓDULO 5: Genera un tablero más estetico
 def printBoard(board):
     print("   " + "  ".join(f"{i+1:2}" for i in range(board.shape[1])))
     print("  +" + "---+" * board.shape[1])
@@ -101,7 +101,7 @@ def printBoard(board):
         print(f"{i+1} | " + " | ".join(' ' if x == 0 else x for x in row) + " |")
         print("  +" + "---+" * board.shape[1])
 
-#MÓDULO 6: Comprueba si hay un ganador
+#MÓDULO 6: Comprueba si hay un ganador horizontalmente
 def checkHorizontal(board):
     checkBoardX = np.copy(board)
     checkBoardO = np.copy(board)
@@ -130,7 +130,7 @@ def checkHorizontal(board):
                 count = 0
         return False
     
-
+#MÓDULO 7: Comprueba si hay un ganador verticalmente
 def checkVertical(board):
     checkBoardX = np.copy(board)
     checkBoardO = np.copy(board)    
@@ -157,6 +157,7 @@ def checkVertical(board):
                 count = 0
         return False
 
+#MÓDULO 8: Comprueba si hay un ganador en la diagonal descendente
 def checkDescendingDiagonal(board):
     checkBoardX = np.copy(board)
     checkBoardO = np.copy(board)
@@ -188,11 +189,11 @@ def checkDescendingDiagonal(board):
             if np.all(diagonal == 'O'):
                 return True
     return False
-                
+
+#MÓDULO 9: Comprueba si hay un ganador en la diagonal ascendente
 def checkAscendinggDiagonal(board):
     checkBoardX = np.copy(board)
     checkBoardO = np.copy(board)    
-    possible = 0
 
     rows, columnas = checkBoardX.shape
     
@@ -220,100 +221,109 @@ def checkAscendinggDiagonal(board):
             if np.all(diagonal == 'O'):
                 return True
     return False
-                
+
+#MÓDULO 10: Recopila las 4 funciones anteriores y comprueba si hay  un ganador de cualquier manera posible  
 def checkWin(board):
     if checkHorizontal(board) or checkVertical(board) or checkDescendingDiagonal(board) or checkAscendinggDiagonal(board):
         return True
     return False
+
 # PROGRAMA PRINCIPAL
 
-# Se usa el MÓDULO 1 para dar inicio al juego, empezando por escoger el checkBoardX
-print("Elige una opción")
-gameBoard = chooseGameBoard()
+# Se usa el MÓDULO 1 para dar inicio al juego, empezando por escoger el tablero
 
-while gameBoard[0] != False:
+play = True
+while play:
+    print("Elige una opción")
+    gameBoard = chooseGameBoard()
+    if gameBoard[0] == False:
+        print("Vuelve pronto...")
+        break
     if gameBoard[1] == True:
-        playing = True
-        while playing:
-            board = gameBoard[2]  # Selecciona el tablero actual
-            printBoard(board)
-            print("Los ceros representan los espacios disponibles")
-            winner = False
-            
-            round = 0
-            while not winner:
-                # INTERACCIÓN JUGADOR 1
-                print("Jugador 1, elige una casilla")
-                while True:
+        board = gameBoard[2]  # Selecciona el tablero actual
+        printBoard(board)
+        print("Los ceros representan los espacios disponibles")
+        
+        winner = False
+        round = 0
+
+        while not winner:
+            # INTERACCIÓN JUGADOR 1
+            print("Jugador 1, elige una casilla")
+            while True:
+                rowX = checkString(input("Elige una fila:  "))
+                columnX = checkString(input("Elige una columna:  "))
+
+                # Verifica que las entradas de fila y columna sean válidas
+                while not rowX or not columnX:
+                    print("Entrada inválida. Elige una casilla válida")
                     rowX = checkString(input("Elige una fila:  "))
                     columnX = checkString(input("Elige una columna:  "))
 
-                    # Verifica que las entradas de fila y columna sean válidas
-                    while not rowX or not columnX:
-                        print("Entrada inválida. Elige una casilla válida")
-                        rowX = checkString(input("Elige una fila:  "))
-                        columnX = checkString(input("Elige una columna:  "))
-
-                    check = checkNumber(rowX[0], columnX[0], board)
-                    if check[0]:
-                        rowX, columnX = check[1:]
-                        if board[rowX-1, columnX-1] == 0:
-                            board[rowX-1, columnX-1] = 'X'
-                            break  # Salir del bucle una vez que se haya marcado una casilla válida
-                        else:
-                            print("Esta casilla está ocupada, elige otra:")
+                check = checkNumber(rowX[0], columnX[0], board)
+                if check[0]:
+                    rowX, columnX = check[1:]
+                    if board[rowX-1, columnX-1] == 0:
+                        board[rowX-1, columnX-1] = 'X'
+                        break  # Salir del bucle una vez que se haya marcado una casilla válida
                     else:
-                        print("Casilla no disponible. Elige otra casilla")
+                        print("Esta casilla está ocupada, elige otra:")
+                else:
+                    print("Casilla no disponible. Elige otra casilla")
 
-                printBoard(board)
-                if round >= 3:
-                    isThereAWinner(board) #Se comprueba si aun hay posibilidades de ganar despues de cada vuelta.
+            printBoard(board)
+            if round >= 3 and checkWin:
+                winner == True
+                break       
+            if round >= 3:
+                isThereAWinner(board) #Se comprueba si aun hay posibilidades de ganar despues de cada vuelta.
+            # INTERACCIÓN JUGADOR 2
+            print("Jugador 2, elige una casilla")
+            while True:
+                rowO = checkString(input("Elige una fila:  "))
+                columnO = checkString(input("Elige una columna:  "))
 
-                # INTERACCIÓN JUGADOR 2
-                print("Jugador 2, elige una casilla")
-                while True:
+                # Verifica que las entradas de row y columna sean válidas
+                while not rowO or not columnO:
+                    print("Entrada inválida. Elige una casilla válida")
                     rowO = checkString(input("Elige una fila:  "))
                     columnO = checkString(input("Elige una columna:  "))
 
-                    # Verifica que las entradas de row y columna sean válidas
-                    while not rowO or not columnO:
-                        print("Entrada inválida. Elige una casilla válida")
-                        rowO = checkString(input("Elige una fila:  "))
-                        columnO = checkString(input("Elige una columna:  "))
-
-                    check = checkNumber(rowO[0], columnO[0], board)
-                    if check[0]:
-                        rowO, columnO = check[1:]
-                        if board[rowO-1, columnO-1] == 0:
-                            board[rowO-1, columnO-1] = 'O'
-                            break  # Salir del bucle una vez que se haya marcado una casilla válida
-                        else:
-                            print("Esta casilla está ocupada, elige otra:")
+                check = checkNumber(rowO[0], columnO[0], board)
+                if check[0]:
+                    rowO, columnO = check[1:]
+                    if board[rowO-1, columnO-1] == 0:
+                        board[rowO-1, columnO-1] = 'O'
+                        break  # Salir del bucle una vez que se haya marcado una casilla válida
                     else:
-                        print("Casilla no disponible. Elige otra casilla")
-
-                printBoard(board)
-                if round >= 3:
-                    isThereAWinner(board) #Se comprueba si aun hay posibilidades de ganar despues de cada vuelta.                
-                round+=1
-
-            # Pregunta al usuario si desea seguir jugando
-            keepPlaying = True
-            while keepPlaying:
-                print("¿Quieres seguir jugando?")
-                print("a. Sí")
-                print("b. No")
-                answer = input().lower().replace(" ", "")
-                if answer == "a":
-                    keepPlaying = True
-                elif answer == "b":
-                    print("Vuelve pronto...")
-                    playing = False
+                        print("Esta casilla está ocupada, elige otra:")
                 else:
-                    print("Esta opción no está disponible. Elige otra opción")
+                    print("Casilla no disponible. Elige otra casilla")
+
+            printBoard(board)
+            if round >= 3 and checkWin:
+                winner == True
+                break               
+            if round >= 3:
+                isThereAWinner(board) #Se comprueba si aun hay posibilidades de ganar despues de cada vuelta.
+            round+=1
+
+        # Pregunta al usuario si desea seguir jugando
+        keepPlaying = True
+        while keepPlaying:
+            print("¿Quieres seguir jugando?")
+            print("a. Sí")
+            print("b. No")
+            answer = input().lower().replace(" ", "")
+            if answer == "a":
+                play = True
+            elif answer == "b":
+                print("Vuelve pronto...")
+                play = False
+            else:
+                print("Esta opción no está disponible. Elige otra opción")  
     else:
-        # Si la opción de continuar es falsa, se vuelve a elegir el tablero
+            # Si la opción de continuar es falsa, se vuelve a elegir el tablero
         gameBoard = chooseGameBoard()
 
-print("Vuelve pronto...")
 
