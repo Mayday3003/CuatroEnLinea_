@@ -75,69 +75,24 @@ def isThereAWinner(board):
             if checkBoardX[j, i] == 0:
                 checkBoardX[j, i] = 'X'
     
-    possible = 0
-
-    #Faltan las diferentes formas de ganar (diagonal)
-    
-    for j in range(checkBoardX.shape[0]):
-        count = 0
-        for i in range(checkBoardX.shape[1]):
-            if checkBoardX[j, i] == 'X':
-                count += 1
-                if count == 4:
-                    possible += 1
-            else:
-                count = 0
-    
-    for j in range(checkBoardX.shape[0]):
-        count = 0
-        for i in range(checkBoardX.shape[1]):
-            if checkBoardX[i, j] == 'X':
-                count += 1
-                if count == 4:
-                    possible += 1
-            else:
-                count = 0
-
-    # Modifica la copia de O
+    checkBoardX = checkWin(checkBoardX)
 
     for j in range(checkBoardO.shape[0]):
         for i in range(checkBoardO.shape[1]):
             if checkBoardO[j, i] == 0:
                 checkBoardO[j, i] = 'O'
-    
-    possible = 0
 
-    #Faltan las diferentes formas de ganar (diagonal)
-    
-    for j in range(checkBoardO.shape[0]):
-        count = 0
-        for i in range(checkBoardO.shape[1]):
-            if checkBoardO[j, i] == 'O':
-                count += 1
-                if count == 4:
-                    possible += 1
-            else:
-                count = 0
-    for j in range(checkBoardO.shape[0]):
-        count = 0
-        for i in range(checkBoardO.shape[1]):
-            if checkBoardO[i, j] == 'O':
-                count += 1
-                if count == 4:
-                    possible += 1
-            else:
-                count = 0
-    
+    checkBoardO = checkWin(checkBoardO)
     """
     Revisa si uno de los 2 jugadores tiene posibilidades de ganar o no
     PD: En un futuro, en lugar de los prints, se van a retornar valores booleanos para continuar o no con el juego
     """
-    if possible >= 1:
+    if checkBoardO or checkBoardX:
         print("Sigue Jugando")
     else:
         print("Es un empate")
 
+#MÓDULO 5: Genera un checkBoardX más estetico
 def printBoard(board):
     print("   " + "  ".join(f"{i+1:2}" for i in range(board.shape[1])))
     print("  +" + "---+" * board.shape[1])
@@ -146,9 +101,133 @@ def printBoard(board):
         print(f"{i+1} | " + " | ".join(' ' if x == 0 else x for x in row) + " |")
         print("  +" + "---+" * board.shape[1])
 
+#MÓDULO 6: Comprueba si hay un ganador
+def checkHorizontal(board):
+    checkBoardX = np.copy(board)
+    checkBoardO = np.copy(board)
+
+    
+    for j in range(checkBoardX.shape[0]):
+        count = 0
+        for i in range(checkBoardX.shape[1]):
+            if checkBoardX[j, i] == 'X':
+                count += 1
+                if count == 4:
+                    return True
+            else:
+                count = 0
+        return False
+
+
+    for j in range(checkBoardO.shape[0]):
+        count = 0
+        for i in range(checkBoardO.shape[1]):
+            if checkBoardO[j, i] == 'O':
+                count += 1
+                if count == 4:
+                    return True
+            else:
+                count = 0
+        return False
+    
+
+def checkVertical(board):
+    checkBoardX = np.copy(board)
+    checkBoardO = np.copy(board)    
+
+    for j in range(checkBoardO.shape[0]):
+        count = 0
+        for i in range(checkBoardO.shape[1]):
+            if checkBoardO[i, j] == 'O':
+                count += 1
+                if count == 4:
+                    return True
+            else:
+                count = 0
+        return False
+
+    for j in range(checkBoardX.shape[0]):
+        count = 0
+        for i in range(checkBoardX.shape[1]):
+            if checkBoardX[i, j] == 'X':
+                count += 1
+                if count == 4:
+                    return True
+            else:
+                count = 0
+        return False
+
+def checkDescendingDiagonal(board):
+    checkBoardX = np.copy(board)
+    checkBoardO = np.copy(board)
+
+    rows, columnas = checkBoardX.shape
+    
+    for row in range(rows - 3):
+        for col in range(columnas - 3):
+            # Extraer la submatriz 4x4 que contiene la diagonal
+            subBoard = checkBoardX[row:row+4, col:col+4]
+            
+            # Obtener la diagonal descendente principal (de izquierda a derecha)
+            diagonal = np.diag(subBoard)
+            
+            # Comprobar si todos los elementos de la diagonal son iguales al jugador
+            if np.all(diagonal == 'X'):
+                return True
+
+
+    for row in range(rows - 3):
+        for col in range(columnas - 3):
+            # Extraer la submatriz 4x4 que contiene la diagonal
+            subBoard = checkBoardO[row:row+4, col:col+4]
+            
+            # Obtener la diagonal descendente principal (de izquierda a derecha)
+            diagonal = np.diag(subBoard)
+            
+            # Comprobar si todos los elementos de la diagonal son iguales al jugador
+            if np.all(diagonal == 'O'):
+                return True
+    return False
+                
+def checkAscendinggDiagonal(board):
+    checkBoardX = np.copy(board)
+    checkBoardO = np.copy(board)    
+    possible = 0
+
+    rows, columnas = checkBoardX.shape
+    
+    for row in range(rows - 3):
+        for col in range(columnas - 3):
+            # Extraer la submatriz 4x4 que contiene la diagonal
+            subBoard = checkBoardX[row:row+4, col:col+4]
+            
+            # Obtener la diagonal descendente principal (de izquierda a derecha)
+            diagonal = np.diag(np.fliplr(subBoard))
+            
+            # Comprobar si todos los elementos de la diagonal son iguales al jugador
+            if np.all(diagonal == 'X'):
+                return True
+
+    for row in range(rows - 3):
+        for col in range(columnas - 3):
+            # Extraer la submatriz 4x4 que contiene la diagonal
+            subBoard = checkBoardO[row:row+4, col:col+4]
+            
+            # Obtener la diagonal descendente principal (de izquierda a derecha)
+            diagonal = np.diag(np.fliplr(subBoard))
+            
+            # Comprobar si todos los elementos de la diagonal son iguales al jugador
+            if np.all(diagonal == 'O'):
+                return True
+    return False
+                
+def checkWin(board):
+    if checkHorizontal(board) or checkVertical(board) or checkDescendingDiagonal(board) or checkAscendinggDiagonal(board):
+        return True
+    return False
 # PROGRAMA PRINCIPAL
 
-# Se usa el MÓDULO 1 para dar inicio al juego, empezando por escoger el tablero
+# Se usa el MÓDULO 1 para dar inicio al juego, empezando por escoger el checkBoardX
 print("Elige una opción")
 gameBoard = chooseGameBoard()
 
@@ -161,90 +240,62 @@ while gameBoard[0] != False:
             print("Los ceros representan los espacios disponibles")
             winner = False
             
+            round = 0
             while not winner:
-                isThereAWinner(board) #Se comprueba si aun hay posibilidades de ganar despues de cada vuelta.
                 # INTERACCIÓN JUGADOR 1
                 print("Jugador 1, elige una casilla")
-                rowX = checkString(input("Elige una fila:  "))
-                columnX = checkString(input("Elige una columna:  "))
-
-                # Verifica que las entradas de fila y columna sean válidas
-                while not rowX or not columnX:
-                    print("Entrada inválida. Elige una casilla válida")
+                while True:
                     rowX = checkString(input("Elige una fila:  "))
                     columnX = checkString(input("Elige una columna:  "))
 
-                correctBox = False
-                while not correctBox:
-                    check = checkNumber(rowX[0], columnX[0], board)
-                    if check[0]:
-                        rowX, columnX = check[1:]
-                        correctBox = True
-                    else:
-                        print("Casilla no disponible. Elige otra casilla")
+                    # Verifica que las entradas de fila y columna sean válidas
+                    while not rowX or not columnX:
+                        print("Entrada inválida. Elige una casilla válida")
                         rowX = checkString(input("Elige una fila:  "))
                         columnX = checkString(input("Elige una columna:  "))
 
-                # Marca la casilla elegida por el Jugador 1
-                if board[rowX-1, columnX-1] == 0:
-                    board[rowX-1, columnX-1] = 'X'
-                else:
-                    print("Esta casilla está ocupada, elige otra:")
-                    continue
+                    check = checkNumber(rowX[0], columnX[0], board)
+                    if check[0]:
+                        rowX, columnX = check[1:]
+                        if board[rowX-1, columnX-1] == 0:
+                            board[rowX-1, columnX-1] = 'X'
+                            break  # Salir del bucle una vez que se haya marcado una casilla válida
+                        else:
+                            print("Esta casilla está ocupada, elige otra:")
+                    else:
+                        print("Casilla no disponible. Elige otra casilla")
+
                 printBoard(board)
+                if round >= 3:
+                    isThereAWinner(board) #Se comprueba si aun hay posibilidades de ganar despues de cada vuelta.
 
                 # INTERACCIÓN JUGADOR 2
                 print("Jugador 2, elige una casilla")
-                rowO = checkString(input("Elige una fila:  "))
-                columnO = checkString(input("Elige una columna:  "))
-
-                # Verifica que las entradas de fila y columna sean válidas
-                while not rowO or not columnO:
-                    print("Entrada inválida. Elige una casilla válida")
+                while True:
                     rowO = checkString(input("Elige una fila:  "))
                     columnO = checkString(input("Elige una columna:  "))
 
-                correctBox = False
-                while not correctBox:
-                    check = checkNumber(rowO[0], columnO[0], board)
-                    if check[0]:
-                        rowO, columnO = check[1:]
-                        correctBox = True
-                    else:
-                        print("Casilla no disponible. Elige otra casilla")
+                    # Verifica que las entradas de row y columna sean válidas
+                    while not rowO or not columnO:
+                        print("Entrada inválida. Elige una casilla válida")
                         rowO = checkString(input("Elige una fila:  "))
                         columnO = checkString(input("Elige una columna:  "))
 
-                # Marca la casilla elegida por el Jugador 2
-                if board[rowO-1, columnO-1] == 0:
-                    board[rowO-1, columnO-1] = 'O'
-                else:
-                    print("Esta casilla está ocupada, elige otra:")
-                    continue
+                    check = checkNumber(rowO[0], columnO[0], board)
+                    if check[0]:
+                        rowO, columnO = check[1:]
+                        if board[rowO-1, columnO-1] == 0:
+                            board[rowO-1, columnO-1] = 'O'
+                            break  # Salir del bucle una vez que se haya marcado una casilla válida
+                        else:
+                            print("Esta casilla está ocupada, elige otra:")
+                    else:
+                        print("Casilla no disponible. Elige otra casilla")
+
                 printBoard(board)
-                
-            #PARTE NUEVAAA
-            # Verifica si alguien ha ganado 
-            winner = False
-            for i in range(board.shape[0]):
-        
-                if all(board[i, :] == 'X'):
-                    winner = True
-                    break
-                elif all(board[:, i] == 'X'):
-                    winner = True
-                    break
-                elif all(np.diag(board) == 'X') or all(np.diag(np.fliplr(board)) == 'X'):
-                    winner = True
-                    break
-                elif all(board[i, :] == 'O'):
-                 winner = True
-                 break
-                elif all(board[:, i] == 'O'):
-                 winner
-                elif all(np.diag(board) == 'O') or all(np.diag(np.fliplr(board)) == 'O'):
-                    winner = True
-                    break
+                if round >= 3:
+                    isThereAWinner(board) #Se comprueba si aun hay posibilidades de ganar despues de cada vuelta.                
+                round+=1
 
             # Pregunta al usuario si desea seguir jugando
             keepPlaying = True
