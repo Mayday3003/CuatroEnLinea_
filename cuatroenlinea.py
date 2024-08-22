@@ -116,7 +116,6 @@ def checkHorizontal(board):
                     return True
             else:
                 count = 0
-        return False
 
 
     for j in range(checkBoardO.shape[0]):
@@ -128,7 +127,8 @@ def checkHorizontal(board):
                     return True
             else:
                 count = 0
-        return False
+
+    return False
     
 #MÓDULO 7: Comprueba si hay un ganador verticalmente
 def checkVertical(board):
@@ -144,7 +144,6 @@ def checkVertical(board):
                     return True
             else:
                 count = 0
-        return False
 
     for j in range(checkBoardX.shape[0]):
         count = 0
@@ -155,7 +154,8 @@ def checkVertical(board):
                     return True
             else:
                 count = 0
-        return False
+  
+    return False
 
 #MÓDULO 8: Comprueba si hay un ganador en la diagonal descendente
 def checkDescendingDiagonal(board):
@@ -272,7 +272,7 @@ while play:
                     print("Casilla no disponible. Elige otra casilla")
 
             printBoard(board)
-            if round >= 3 and checkWin:
+            if round >= 3 and checkWin(board):
                 winner == True
                 break       
             if round >= 3:
@@ -301,7 +301,7 @@ while play:
                     print("Casilla no disponible. Elige otra casilla")
 
             printBoard(board)
-            if round >= 3 and checkWin:
+            if round >= 3 and checkWin(board):
                 winner == True
                 break               
             if round >= 3:
@@ -316,10 +316,10 @@ while play:
             print("b. No")
             answer = input().lower().replace(" ", "")
             if answer == "a":
-                play = True
+                keepPlaying, winner, play = False, True, True
             elif answer == "b":
                 print("Vuelve pronto...")
-                play = False
+                keepPlaying, winner, play = False, True, False
             else:
                 print("Esta opción no está disponible. Elige otra opción")  
     else:
