@@ -233,6 +233,11 @@ def checkWin(board):
 # Se usa el MÓDULO 1 para dar inicio al juego, empezando por escoger el tablero
 
 play = True
+roundWinX = []
+roundWinO = []
+pointsX = 0
+pointsO = 0
+whoWin = None
 while play:
     print("Elige una opción")
     gameBoard = chooseGameBoard()
@@ -273,7 +278,8 @@ while play:
 
             printBoard(board)
             if round >= 3 and checkWin(board):
-                winner == True
+                whoWin = "Jugador 1"
+                pointsX += 1
                 break       
             if round >= 3:
                 isThereAWinner(board) #Se comprueba si aun hay posibilidades de ganar despues de cada vuelta.
@@ -301,12 +307,53 @@ while play:
                     print("Casilla no disponible. Elige otra casilla")
 
             printBoard(board)
+
             if round >= 3 and checkWin(board):
-                winner == True
+                whoWin = "Jugador 2"
+                pointsO += 1
                 break               
             if round >= 3:
                 isThereAWinner(board) #Se comprueba si aun hay posibilidades de ganar despues de cada vuelta.
+            if whoWin == "Jugador 2":
+                roundWinO.append(whoWin)
+                roundWinX = []
+                whoWin = ""
+            elif whoWin == "Jugador 1":
+                roundWinX.append(whoWin)
+                roundWinO = []
+                whoWin = ""
+            print(f"{roundWinX} --- {roundWinO}")
             round+=1
+
+            """TENER EN CUENTA: EN EL CASO CUANDO UN JUGADOR GANA 2 PARTIDAS CONSECUTIVAS FUNCIONA BIEN,
+            PERO SI SE DECIDE CONTINUAR EL JUEGO, HAY UN BUG QUE HACE QUE AUNQUE EL JUGADOR DISTINTO A QUIEN
+            GANO PRIMERO, DE IGUAL MANERA SE LE VA A TRIPLICAR A ESTE ULTIMO, ES DECIR, UNA VEZ UN JUGADOR
+            LOGRA LAS 2 PARTIDAS CONSECUTIVAS, SE BUGEA HACIENDO QUE DE AHI EN ADELANTE SIEMPRE SE TRIPLIQUEN SUS
+            PUNTOS SIN IMPORTAR LAS CONDICIONES ESTABLECIDAS
+            
+            ------------------------------------------SOLUCIONAR-----------------------------------------------"""
+
+            """TAMBIEN HAY QUE ARREGLAR EL BUG DE CUANDO A LA HORA DE ELEGIR EL TABLERO, SI SE ELIGE UNA OPCION QUE NO
+            ESTE DISPONIBLE, PIDE EL TABLERO DE NUEVO 2 VECES, LA IDEA ES QUE SI VUELVA A PEDIR EL TABLERO PERO SOLO UNA VEZ
+            
+            POSIBLE SOLUCION: QUITAR EL ELSE DE ABAJO DEL TODO Y HACER UN CICLO DONDE SE PIDE EL PRIMER TABLERO, PARA QUE SE EJECUTE
+            HASTA QUE LA OPCION SEA VALIDA Y ASI EVITAR ESTA OPCION REPETIDA
+            
+            ------------------------------------------SOLUCIONAR-----------------------------------------------"""
+        
+        if (np.all(np.array(roundWinX) == "Jugador 1") and len(roundWinX) == 1 and checkWin):
+            roundWinX = []
+            pointsX *= 3
+
+        elif (np.all(np.array(roundWinO) == "Jugador 2") and len(roundWinO) == 1 and checkWin):
+            roundWinO = []
+            whoWin = ""
+            pointsO *= 3
+
+        print(f"{whoWin} gano")
+        print("")
+        print(f"Jugador 1 -> {pointsX}")
+        print(f"Jugador 2 -> {pointsO}")
 
         # Pregunta al usuario si desea seguir jugando
         keepPlaying = True
@@ -325,5 +372,4 @@ while play:
     else:
             # Si la opción de continuar es falsa, se vuelve a elegir el tablero
         gameBoard = chooseGameBoard()
-
 
