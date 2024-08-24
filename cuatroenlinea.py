@@ -7,7 +7,39 @@ GAME_BOARD2 = (6, 6)  # Tamaño del tablero 6x6
 # MÓDULOS
 
 # MÓDULO 1: ELEGIR TABLERO
-def chooseGameBoard() -> int | str:
+def playerName ():
+    print("Jugador 1, ingresa tu nombre")
+    player1 = input()
+    print("Jugador 2, ingresa tu nombre")
+    player2 = input()
+    while not (player1.lower().replace(" ", "") and player2.lower().replace(" ", "")):
+        if not player1.lower().replace(" ", ""):
+            print("El nombre del jugador 1 es invalido, por favor, ingresa otro nombre")
+            print("Jugador 1, ingresa tu nombre")
+            player1 = input()
+        else:
+            print("El nombre del jugador 2 es invalido, por favor, ingresa otro nombre")
+            print("Jugador 2, ingresa tu nombre")
+            player2 = input()
+    while player1.lower().replace(" ", "") == player2.lower().replace(" ", ""):
+        print("Los nombres son iguales, por favor, ingresen otros nombres")
+        print("Jugador 1, ingresa tu nombre")
+        player1 = input()
+        print("Jugador 2, ingresa tu nombre")
+        player2 = input()
+        while not (player1.lower().replace(" ", "") and player2.lower().replace(" ", "")):
+            if not player1.lower().replace(" ", ""):
+                print("El nombre del jugador 1 es invalido, por favor, ingresa otro nombre")
+                print("Jugador 1, ingresa tu nombre")
+                player1 = input()
+            else:
+                print("El nombre del jugador 2 es invalido, por favor, ingresa otro nombre")
+                print("Jugador 2, ingresa tu nombre")
+                player2 = input()
+    return (player1, player2)
+   
+
+def chooseGameBoard() -> int | str | list[bool]:
     """
     Permite al usuario elegir el tamaño del tablero o salir del juego.
     Retorna una tupla con el estado del juego y el tablero seleccionado.
@@ -29,7 +61,7 @@ def chooseGameBoard() -> int | str:
     else:
         # Mensaje de error si la opción no es válida
         print("Esta opción no está disponible, elige una opción que sí esté disponible")
-        return (True, False)
+        return [True, False]
 
 # MÓDULO 2: VERIFICAR SI LA CASILLA EXISTE
 def checkNumber(rowX, columnX, gameBoard) -> tuple:
@@ -90,7 +122,7 @@ def isThereAWinner(board):
     if checkBoardO or checkBoardX:
         return True
     else:
-        print("Es un empate")
+        return False
 
 #MÓDULO 5: Genera un tablero más estetico
 def printBoard(board):
@@ -238,6 +270,12 @@ roundWinO = []
 pointsX = 0
 pointsO = 0
 whoWin = None
+print(
+"""
+Bienvenidos a 4 en linea.
+Jugadores, eligan sus nombres.
+""")
+player1, player2 = playerName()
 while play:
     print("Elige una opción")
     gameBoard = chooseGameBoard()
@@ -254,7 +292,7 @@ while play:
 
         while not winner:
             # INTERACCIÓN JUGADOR 1
-            print("Jugador 1, elige una casilla")
+            print(f"{player1}, elige una casilla")
             while True:
                 rowX = checkString(input("Elige una fila:  "))
                 columnX = checkString(input("Elige una columna:  "))
@@ -278,13 +316,15 @@ while play:
 
             printBoard(board)
             if round >= 3 and checkWin(board):
-                whoWin = "Jugador 1"
+                whoWin = player1
                 pointsX += 1
                 break       
-            if round >= 3:
-                isThereAWinner(board) #Se comprueba si aun hay posibilidades de ganar despues de cada vuelta.
+            if round >= 3: 
+                if not isThereAWinner(board): #Se comprueba si aun hay posibilidades de ganar despues de cada vuelta.
+                    print("¡Es un empate!")
+                    break 
             # INTERACCIÓN JUGADOR 2
-            print("Jugador 2, elige una casilla")
+            print(f"{player2}, elige una casilla")
             while True:
                 rowO = checkString(input("Elige una fila:  "))
                 columnO = checkString(input("Elige una columna:  "))
@@ -309,51 +349,41 @@ while play:
             printBoard(board)
 
             if round >= 3 and checkWin(board):
-                whoWin = "Jugador 2"
+                whoWin = player2
                 pointsO += 1
                 break               
-            if round >= 3:
-                isThereAWinner(board) #Se comprueba si aun hay posibilidades de ganar despues de cada vuelta.
-            if whoWin == "Jugador 2":
-                roundWinO.append(whoWin)
-                roundWinX = []
-                whoWin = ""
-            elif whoWin == "Jugador 1":
+            if round >= 3: 
+                if not isThereAWinner(board): #Se comprueba si aun hay posibilidades de ganar despues de cada vuelta.
+                    print("¡Es un empate!")
+                    break 
+            if whoWin == player1:
                 roundWinX.append(whoWin)
                 roundWinO = []
                 whoWin = ""
-            print(f"{roundWinX} --- {roundWinO}")
+            elif whoWin == player2:
+                roundWinO.append(whoWin)
+                roundWinX = []
+                whoWin = ""
+            else:
+                roundWinO = []
+                roundWinX = []
+                whoWin = ""
             round+=1
-
-            """TENER EN CUENTA: EN EL CASO CUANDO UN JUGADOR GANA 2 PARTIDAS CONSECUTIVAS FUNCIONA BIEN,
-            PERO SI SE DECIDE CONTINUAR EL JUEGO, HAY UN BUG QUE HACE QUE AUNQUE EL JUGADOR DISTINTO A QUIEN
-            GANO PRIMERO, DE IGUAL MANERA SE LE VA A TRIPLICAR A ESTE ULTIMO, ES DECIR, UNA VEZ UN JUGADOR
-            LOGRA LAS 2 PARTIDAS CONSECUTIVAS, SE BUGEA HACIENDO QUE DE AHI EN ADELANTE SIEMPRE SE TRIPLIQUEN SUS
-            PUNTOS SIN IMPORTAR LAS CONDICIONES ESTABLECIDAS
-            
-            ------------------------------------------SOLUCIONAR-----------------------------------------------"""
-
-            """TAMBIEN HAY QUE ARREGLAR EL BUG DE CUANDO A LA HORA DE ELEGIR EL TABLERO, SI SE ELIGE UNA OPCION QUE NO
-            ESTE DISPONIBLE, PIDE EL TABLERO DE NUEVO 2 VECES, LA IDEA ES QUE SI VUELVA A PEDIR EL TABLERO PERO SOLO UNA VEZ
-            
-            POSIBLE SOLUCION: QUITAR EL ELSE DE ABAJO DEL TODO Y HACER UN CICLO DONDE SE PIDE EL PRIMER TABLERO, PARA QUE SE EJECUTE
-            HASTA QUE LA OPCION SEA VALIDA Y ASI EVITAR ESTA OPCION REPETIDA
-            
-            ------------------------------------------SOLUCIONAR-----------------------------------------------"""
+        print(f"{whoWin} gano")
         
-        if (np.all(np.array(roundWinX) == "Jugador 1") and len(roundWinX) == 1 and checkWin):
+        if roundWinX and len(roundWinX) == 2:
             roundWinX = []
+            whoWin = ""
             pointsX *= 3
 
-        elif (np.all(np.array(roundWinO) == "Jugador 2") and len(roundWinO) == 1 and checkWin):
+        elif roundWinO and len(roundWinO) == 2:
             roundWinO = []
-            whoWin = ""
             pointsO *= 3
+            whoWin = ""
 
-        print(f"{whoWin} gano")
         print("")
-        print(f"Jugador 1 -> {pointsX}")
-        print(f"Jugador 2 -> {pointsO}")
+        print(f"{player1} -> {pointsX}")
+        print(f"{player2} -> {pointsO}")
 
         # Pregunta al usuario si desea seguir jugando
         keepPlaying = True
@@ -369,7 +399,3 @@ while play:
                 keepPlaying, winner, play = False, True, False
             else:
                 print("Esta opción no está disponible. Elige otra opción")  
-    else:
-            # Si la opción de continuar es falsa, se vuelve a elegir el tablero
-        gameBoard = chooseGameBoard()
-
