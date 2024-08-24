@@ -299,7 +299,7 @@ def checkDescendingDiagonal(board):
     return False
 
 # MÓDULO 11: VERIFICAR GANADOR DIAGONAL ASCENDENTE
-def checkAscendinggDiagonal(board):
+def checkAscendingDiagonal(board):
     """
     Verifica si hay un ganador en el tablero mediante una línea diagonal ascendente.
     Retorna True si hay cuatro 'X' o 'O' consecutivos en cualquier diagonal, False en caso contrario.
@@ -342,11 +342,11 @@ def checkWin(board):
     Verifica si hay un ganador en el tablero.
     Retorna True si hay un ganador, False en caso contrario.
     """
-    return checkHorizontal(board) or checkVertical(board) or checkDescendingDiagonal(board) or checkAscendinggDiagonal(board)
+    return checkHorizontal(board) or checkVertical(board) or checkDescendingDiagonal(board) or checkAscendingDiagonal(board)
 
 # PROGRAMA PRINCIPAL
 
-# Se usa el MÓDULO 1 para dar inicio al juego, empezando por escoger el tablero
+# Se usa el MÓDULO 1 para dar inicio al juego
 if intro():  # Llama a la función intro() para mostrar las reglas y preguntar si el jugador está listo
     play = True  # Inicializa la variable de control del bucle principal del juego
     roundWinX = []  # Lista para almacenar las victorias consecutivas del jugador 1 ('X')
