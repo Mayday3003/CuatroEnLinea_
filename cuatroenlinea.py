@@ -4,6 +4,8 @@ import numpy as np
 GAME_BOARD1 = (4, 4)  # Tamaño del tablero 4x4
 GAME_BOARD2 = (6, 6)  # Tamaño del tablero 6x6
 
+#TODO:Modularizar y optimizar codigo
+
 # MÓDULOS
 
 # MÓDULO 1: ELEGIR TABLERO
