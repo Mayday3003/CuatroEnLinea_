@@ -4,7 +4,7 @@ import numpy as np
 GAME_BOARD1 = (4, 4)  # Tamaño del tablero 4x4
 GAME_BOARD2 = (6, 6)  # Tamaño del tablero 6x6
 
-#TODO:Modularizar y optimizar codigo
+#TODO:Modularizar y optimizar codigo y agragar comentarios de las funcionalidades de cada parte del codigo
 
 # MÓDULOS
 
@@ -358,19 +358,19 @@ while play:
                 if not isThereAWinner(board): #Se comprueba si aun hay posibilidades de ganar despues de cada vuelta.
                     print("¡Es un empate!")
                     break 
-            if whoWin == player1:
-                roundWinX.append(whoWin)
-                roundWinO = []
-                whoWin = ""
-            elif whoWin == player2:
-                roundWinO.append(whoWin)
-                roundWinX = []
-                whoWin = ""
-            else:
-                roundWinO = []
-                roundWinX = []
-                whoWin = ""
             round+=1
+        if whoWin == player1:
+            roundWinX.append(whoWin)
+            roundWinO = []
+            whoWin = ""
+        elif whoWin == player2:
+            roundWinO.append(whoWin)
+            roundWinX = []
+            whoWin = ""
+        else:
+            roundWinO = []
+            roundWinX = []
+            whoWin = ""
         print(f"{whoWin} gano")
         
         if roundWinX and len(roundWinX) == 2:
