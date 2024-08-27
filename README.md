@@ -1,7 +1,9 @@
-**Hay que hacer ahí un buen readme**\
-Toca poner acá "Una presentación donde se evidencie en el código las características de un sistema"
-[Evaluación Cuatro en línea.docx](https://github.com/user-attachments/files/16656459/Evaluacion.Cuatro.en.linea.docx)\
-Falta:
-* El programa debe mostrar empate cuando ya no es posible que ninguno de los dos jugadores realice el cuatro en línea (antes de finalizar el juego).
-* 	El sistema debe mostrar el puntaje de cada jugador después de varias partidas (puntaje acumulado). Ejemplo: Si se juegan tres partidas y las gana el jugador 1, el programa debe mostrar: Jugador 1  3   Jugador 2 0 en el puntaje acumulado
-* Si un jugador gana dos partidas seguidas, su puntaje acumulado debe triplicarse.
+**Cuatro en linea**
+Las reglas son sencillas:
+
+* El jugador que complete cuatro fichas en línea (ya sea horizontal, vertical o diagonal) gana la partida.
+* Se triplicarán los puntos al jugador que gane dos partidas consecutivas.
+* Antes de comenzar, los jugadores deben elegir su nombre y el tamaño del tablero: 4x4 o 6x6.
+* Si ninguno de los dos jugadores tiene oportunidad de ganar, aunque el tablero no esté lleno, la partida terminará en empate.
+* Después de cada partida, se mostrará el puntaje acumulado de cada jugador.
+* Después de cada partida, el sistema preguntará si los jugadores desean seguir jugando.
