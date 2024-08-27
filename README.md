@@ -1,4 +1,4 @@
-**Cuatro en linea**
+**Cuatro en linea**\
 Las reglas son sencillas:
 
 * El jugador que complete cuatro fichas en línea (ya sea horizontal, vertical o diagonal) gana la partida.
